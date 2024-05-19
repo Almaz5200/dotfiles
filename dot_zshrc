@@ -1,0 +1,53 @@
+export PATH="/Library/Frameworks/Python.framework/Versions/3.10/bin:$PATH"
+export PATH="/Users/almaz5200/.mint/bin:$PATH"
+export PATH="/Users/almaz5200/.mint/bin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/Users/almaz5200/flutter/bin:$PATH"
+export PATH="/Users/almaz5200/mybin:$PATH"
+export PATH="/Applications/Alacritty.app/Contents/MacOS:$PATH"
+
+source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+
+eval "$(starship init zsh)"
+eval "$(~/.local/bin/mise activate zsh)"
+export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux-layouts"
+
+export MILVUS_HOST_IP="178.218.211.251"
+
+alias vim=nvim
+alias sourcekit-lsp="xcrun sourcekit-lsp"
+
+alias evenv="source .venv/bin/activate"
+alias mvenv="python3 -m venv .venv"
+alias pifr="pip freeze > requirements.txt"
+alias protpy="protoc --python_out=. protos/*.proto"
+alias cf="find . -type f | wc -l"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/almaz5200/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/almaz5200/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/almaz5200/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/almaz5200/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+if type brew &>/dev/null
+then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+  autoload -Uz compinit
+  compinit
+fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/almaz5200/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/almaz5200/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/almaz5200/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/almaz5200/Downloads/google-cloud-sdk/completion.zsh.inc'; fi

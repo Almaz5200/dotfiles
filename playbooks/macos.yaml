@@ -1,0 +1,71 @@
+---
+- name: Install NeoVim via Homebrew
+  community.general.homebrew:
+    name: neovim
+    state: present
+
+- name: Git Email
+  git_config:
+    name: user.email
+    scope: global
+    value: artem@almaz5200.com
+
+- name: Git name
+  git_config:
+    name: user.name
+    scope: global
+    value: Artem Trubacheev
+
+- name: Git merge strat
+  git_config:
+    name: pull.rebase
+    scope: global
+    value: true
+
+- name: Install tmuxifier
+  ansible.builtin.git:
+    repo: https://github.com/jimeh/tmuxifier.git
+    dest: ~/.tmuxifier/
+    force: true
+
+- name: Tap brew repos
+  community.general.homebrew_tap:
+    name: "{{ item }}"
+  loop:
+    - jondot/tap
+
+- name: Install packages
+  community.general.homebrew:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - homebrew/cask/openvpn-connect
+    - homebrew/cask/kitty
+    - homebrew/cask/emacs
+
+- name: Get tpm for tmux
+  ansible.builtin.git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: ~/.tmux/plugins/tpm
+
+- name: Set indended shell
+  set_fact:
+    intended_shell: "/opt/homebrew/bin/fish"
+
+- name: Get current system user
+  command: whoami
+  register: untrimmed_user
+  changed_when: False
+
+- name: Trim the username
+  set_fact:
+    system_user: "{{ untrimmed_user.stdout | trim }}"
+
+- name: Get current shell of the user
+  shell: "dscl . -read /Users/{{ system_user }} UserShell | cut -d ' ' -f 2"
+  register: current_shell
+  changed_when: False
+
+- name: Set shell to {{ intended_shell }} if not already
+  command: "sudo chsh -s {{ intended_shell }} {{ system_user }}"
+  when: current_shell.stdout != intended_shell

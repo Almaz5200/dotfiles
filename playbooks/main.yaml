@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  gather_facts: True
+  tasks:
+    - name: Include macOS playbook
+      include_tasks: macos.yaml
+      when: ansible_os_family == "Darwin"
+
+    - name: Include Debian playbook
+      include_tasks: debian.yaml
+      when: ansible_os_family == "Debian"

@@ -1,0 +1,62 @@
+{
+  "Environment Key": {
+    "prefix": "ENV",
+    "body": [
+      "struct ${1:name}: EnvironmentKey {",
+      "  static var defaultValue: ${2:Type} { ${2:Type}() }",
+      "}",
+      "extension EnvironmentValues {",
+      "  var ${3:name}: ${2:Type} {",
+      "    get { self[${1:name}.self] }",
+      "    set { self[${1:name}.self] = newValue }",
+      "  }",
+      "}"
+    ]
+  },
+  "View": {
+    "prefix": "VIEW",
+    "body": [
+      "import Analytics",
+      "import CommonUI",
+      "import DesignSystem",
+      "import Inject",
+      "import SwiftUI",
+      "import Tribunject",
+      "",
+      "struct ${1:Name}: View {",
+      "",
+      "    @StoredCoordinator private var coordinator: Coordinator",
+      "    @Environment(\\.analytics) var analytics: AnalyticsService",
+      "",
+      "    @ObserveInjection var inj",
+      "",
+      "    var body: some View {",
+      "         Text(\"Hello world!\")",
+      "         .enableInjection()",
+      "    }",
+      "",
+      "}"
+    ]
+  },
+  "Model": {
+    "prefix": "MODEL",
+    "body": [
+      "import DesignSystem",
+      "import Foundation",
+      "import Tribuncros",
+      "",
+      "@Init",
+      "public struct ${1:Name}: Hashable, Identifiable {",
+      "",
+      "}"
+    ]
+  },
+  "Text": {
+    "prefix": "TEXT",
+    "body": [
+      "      Text(\"${1:text}\")",
+      "        .textStyle(.subtitle1)",
+      "        .foregroundColor(ComponentColor.Text.primary)"
+    ]
+  }
+}

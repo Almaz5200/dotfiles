@@ -1,0 +1,7 @@
+ansible-password
+ansible.cfg
+*.key
+secrets/
+**/lazy-lock.json
+**/lazyvim.json
+.sh

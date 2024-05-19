@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+function ensure_repo {
+  PT=$1
+  URL=$2
+  if [ ! -d $PT ]; then
+    echo "Cloning $URL to $PT"
+    git clone $URL $PT
+  else
+    echo "Already have $PT"
+  fi
+}
+
+ensure_repo ~/neovim git@github.com:neovim/neovim.git
+
+
+{{ if eq .chezmoi.os "darwin" }}
+# Some mac specific repos
+{{ end }}

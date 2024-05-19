@@ -1,0 +1,55 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/opt/homebrew/bin/fish
+{{ end }}
+
+function ensure_brew
+    set action $argv[1]
+    set package $argv[2]
+    # check if package variable is empty
+    if test -z "$package"
+      set package $action
+    end
+
+    if not type --quiet $action
+      echo "🚨 $package is not installed"
+      brew install $package
+    else
+      echo "✅ $package is already installed!"
+    end
+end
+
+ensure_brew xcbeautify
+ensure_brew kubectl
+ensure_brew pass
+ensure_brew task
+ensure_brew tasksh
+ensure_brew fastlane
+ensure_brew lazygit
+ensure_brew psql postgresql@14
+ensure_brew wakatime-cli
+ensure_brew helm
+ensure_brew k9s
+ensure_brew chezmoi
+ensure_brew mise
+ensure_brew gsed
+ensure_brew ag the_silver_searcher
+ensure_brew gh
+ensure_brew tmux
+ensure_brew fish
+ensure_brew starship
+ensure_brew node
+ensure_brew jq
+ensure_brew zoxide
+ensure_brew bw bitwarden-cli
+ensure_brew fzf
+ensure_brew rg ripgrep
+ensure_brew hygen
+ensure_brew nu nushell
+ensure_brew hugo
+ensure_brew ncdu
+ensure_brew dust
+ensure_brew zellij
+ensure_brew ninja 
+ensure_brew cmake 
+ensure_brew gettext 
+ensure_brew curl

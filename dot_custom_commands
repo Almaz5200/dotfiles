@@ -1,0 +1,105 @@
+# Define functions
+function pfix
+  git add .
+  git commit -a -m "fix"
+  git push
+end
+
+function retimeLast
+  set -x GIT_COMMITTER_DATE (date)
+  git commit --amend --no-edit --date (date)
+end
+
+function envsource
+  for line in (cat $argv | grep -v '^#' | grep -v '^\s*$')
+    set item (string split -m 1 '=' $line)
+    set -gx $item[1] $item[2]
+    echo "Exported key $item[1]"
+  end
+end
+
+function ensure_sim 
+  set ios $argv[1]
+  set device $argv[2]
+  set name $argv[3]
+
+  set iosformatted (echo $ios | sed 's/\./-/g')
+
+  if test -z $ios
+    echo "ios version not provided"
+    return
+  end
+
+  if test -z $device
+    echo "device not provided"
+    return
+  end
+
+  if test -z $name
+    echo "name not provided"
+    return
+  end
+
+  set sim_exists (xcrun simctl list devices "iOS $ios" | grep $name)
+
+  if test -z "$sim_exists"
+    echo "Creating a new simulator with name $name, device $device and iOS $iosformatted"
+    xcrun simctl create $name com.apple.CoreSimulator.SimDeviceType.$device com.apple.CoreSimulator.SimRuntime.iOS-$iosformatted
+  end
+
+end
+
+function ensure_all_simulators
+  set ios $argv[1]
+
+  if test -z $ios
+    echo "ios version not provided"
+    return
+  end
+
+  ensure_sim $ios "iPhone-15-Pro-Max" "Screenshot-island"
+  ensure_sim $ios "iPhone-13-Pro-Max" "Screenshot-regular"
+  ensure_sim $ios "iPad-Pro-12-9-inch-6th-generation-16GB" "Screenshot-ipad"
+
+  ensure_sim $ios "iPhone-15-Pro-Max" "iPhone 15 Pro Max"
+  ensure_sim $ios "iPhone-13-Pro-Max" "iPhone 13 Pro Max"
+  ensure_sim $ios "iPad-Pro-12-9-inch-6th-generation-16GB" "iPad Pro (12.9-inch) (6th generation)"
+
+  ensure_sim $ios "iPhone-15-Pro" "Work"
+
+end
+
+function sync_dotfiles
+  # Navigate to the dotfiles directory
+  cd ~/.local/share/chezmoi
+  chezmoi apply
+
+  # Add any new changes from the dotfiles directory
+  git add .
+
+  # Commit the changes - you can customize the commit message as needed
+  git commit -m "Update dotfiles"
+
+  # Pull any new changes from the remote repository
+  echo "Pulling changes from remote..."
+  git pull origin main
+
+  # Push the changes back to the remote repository
+  echo "Pushing changes to remote..."
+  git push origin main
+
+  # Navigate back to the original directory
+  chezmoi apply
+  cd -
+end
+
+alias syncdot='sync_dotfiles'
+
+function mkScreen
+  cookiecutter templates/statefullView -o UserStories/Screens
+end
+
+function mkView
+  cookiecutter templates/statelessView -o UserStories/Views
+end
+

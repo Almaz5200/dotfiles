@@ -1,0 +1,7 @@
+textconv:
+  - pattern: "**/.config/fish/fish_variables"
+    command: grep
+    args: ["-vE", "(SETUVAR _.*|fish_variables)"]
+# diff:
+# command: "git"
+# args: ["diff", "{{ .Destination }}", "{{ .Target }}"]

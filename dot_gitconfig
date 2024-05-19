@@ -1,0 +1,7 @@
+[filter "cleanFishVars"]
+	clean = awk '!/SETUVAR _.*/{print}'
+[diff "fish_variables"]
+	textconv = awk '!/SETUVAR _.*/{print}'
+[user]
+	email = artem@almaz5200.com
+	name = Artem Trubacheev

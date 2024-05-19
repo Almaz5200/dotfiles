@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# hash: {{ include "playbooks/debian.yaml" | sha256sum }}
+# hash: {{ include "playbooks/macos.yaml" | sha256sum }}
+# hash: {{ include "playbooks/main.yaml" | sha256sum }}
+# hash: {{ include "playbooks/secrets.yaml" | sha256sum }}
+# hash: {{ include "ensure_ansible_macos.sh" | sha256sum }}
+# hash: {{ include "ensure_ansible_debian.sh" | sha256sum }}
+
+sh ~/.local/share/chezmoi/run_once_asetup.sh
+
+echo "Running ansible"
+
+if test ! $(which brew); then
+	export PATH=$PATH:/opt/homebrew/bin
+fi
+
+cd ~/playbooks/
+ansible-playbook main.yaml
