@@ -13,7 +13,6 @@ set -x EDITOR nvim
 
 set -x TMUXIFIER_LAYOUT_PATH "$HOME/.tmux-layouts"
 
-
 # Define aliases
 alias vim='nvim'
 

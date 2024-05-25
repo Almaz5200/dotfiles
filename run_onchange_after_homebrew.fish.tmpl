@@ -1,6 +1,5 @@
 {{ if eq .chezmoi.os "darwin" -}}
 #!/opt/homebrew/bin/fish
-{{ end }}
 
 function ensure_brew
     set action $argv[1]
@@ -53,3 +52,4 @@ ensure_brew ninja
 ensure_brew cmake 
 ensure_brew gettext 
 ensure_brew curl
+{{ end }}
